@@ -19,22 +19,32 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 
-const allowedOrigins = ['https://cron-app-bice.vercel.app', 'https://cron-app-bice.vercel.app/login'];
+// const allowedOrigins = ['https://cron-app-bice.vercel.app', 'https://cron-app-bice.vercel.app/login'];
+
+// const corsOptions = {
+//   origin: (origin, callback) => {
+//     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//   allowedHeaders: ['Content-Type', 'Authorization'],
+// };
+
+// app.use(cors(corsOptions));
+// app.options('*', cors(corsOptions));
 
 const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: '*', // Allow requests from any origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers
 };
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+app.options('*', cors(corsOptions)); // Handle preflight requests
+
 
 // Log to console and log file
 const logStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
