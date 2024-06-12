@@ -17,8 +17,18 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
+
+
+const allowedOrigins = ['https://cron-app-bice.vercel.app', 'https://cron-app-bice.vercel.app/login'];
+
 const corsOptions = {
-  origin: ['https://cron-app-bice.vercel.app'],
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
