@@ -17,10 +17,14 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
-app.use(cors({
-    origin: ['https://cron-app-bice.vercel.app'],
-    optionsSuccessStatus: 200
-}));
+const corsOptions = {
+  origin: ['https://cron-app-bice.vercel.app'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // Log to console and log file
 const logStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
