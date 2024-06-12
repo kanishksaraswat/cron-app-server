@@ -16,7 +16,12 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
 // app.use(morgan('combined', { stream: logger.stream }));
-app.use(cors());  
+const corsOptions = {
+    origin: ['https://cron-app-bice.vercel.app/'],
+    optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 
 // Connect to MongoDB
 connectDB();
