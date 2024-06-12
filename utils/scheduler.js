@@ -1,4 +1,3 @@
-// utils/scheduler.js
 const cron = require('node-cron');
 const axios = require('axios');
 const CronJob = require('../models/CronJob');
@@ -34,4 +33,15 @@ function unscheduleJob(jobId) {
     }
 }
 
-module.exports = { scheduleJob, unscheduleJob };
+const keepServerAlive = () => {
+    cron.schedule('*/10 * * * *', async () => {
+        try {
+            await axios.get(`${process.env.API_URL}/keep-alive`);
+            logger.info('Server is kept alive');
+        } catch (error) {
+            logger.error('Error keeping server alive:', error);
+        }
+    });
+};
+
+module.exports = { scheduleJob, unscheduleJob, keepServerAlive };
